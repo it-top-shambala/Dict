@@ -29,4 +29,38 @@ public class EngToRusDict
     {
         _info -= action; //TODO
     }
+    
+    public bool AddValueToDictItem(string key, string newValue)
+    {
+        if (!_dict.ContainsKey(key))
+        {
+            _info?.Invoke($"Слова {key} в словаре не найдено");
+            return false;
+        }
+
+        if (_dict[key].Any(value => value == newValue))
+        {
+            _info?.Invoke($"Перевод {newValue} для слова {key} уже существует");
+            return false;
+        }
+            
+        _dict[key].Add(newValue);
+        _info?.Invoke($"Перевод {newValue} для слова {key} успешно добавлен");
+        return true;
+    }
+
+    public bool AddItemToDict(string key, List<string> values)
+    {
+        if (_dict.ContainsKey(key))
+        {
+            _info?.Invoke($"Слова {key} в словаре уже существует");
+            return false;
+        }
+            
+        _dict.Add(key, values);
+        _info?.Invoke($"Переводы для слова {key} успешно добавлены");
+        return true;
+    }
+
+    public Dictionary<string, List<string>> GetDict() => _dict;
 }

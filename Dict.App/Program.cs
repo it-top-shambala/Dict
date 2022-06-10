@@ -7,7 +7,18 @@ namespace Dict.App
     {
         static void Main()
         {
-            Dictionary<string, List<string>> dict;
+            var dict = new EngToRusDict();
+            dict.AddHandler((msg) => LogToFile.Info("info.log", msg));
+            
+            var key = "exit";
+            var values = new List<string> { "выход" };
+            dict.AddItemToDict(key, values);
+
+            key = "book";
+            values = new List<string> { "книга", "заказывать" };
+            dict.AddItemToDict(key, values);
+            
+            PrintDict(dict.GetDict());
         }
 
         static void PrintDict(Dictionary<string, List<string>> dict)
@@ -23,34 +34,9 @@ namespace Dict.App
             Console.WriteLine($"{key}:");
             foreach (var value in values)
             {
-                Console.WriteLine($"\t\t{value}");
+                Console.WriteLine($"\t{value}");
             }
             Console.WriteLine();
-        }
-
-        static bool AddValueToDictItem(Dictionary<string, List<string>> dict, string key, string newValue)
-        {
-            if (!dict.ContainsKey(key)) return false;
-
-            /*foreach (var value in dict[key])
-            {
-                if (value == newValue) return false;
-            }*/
-            
-            if (dict[key].Any(value => value == newValue)) return false;
-            
-            dict[key].Add(newValue);
-            return true;
-        }
-
-        static bool AddItemToDict(Dictionary<string, List<string>> dict, string key, List<string> values)
-        {
-            if (dict.ContainsKey(key)) return false;
-            
-            dict.Add(key, values);
-            return true;
-
-            // return dict.TryAdd(key, values);
         }
     }
 }
